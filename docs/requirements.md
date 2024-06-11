@@ -7,4 +7,4 @@
 
 <br>
 
-- [ ] `/admin`으로 접속하면 `admin/index.html` 페이지로 연결한다.
+- [x] `/admin`으로 접속하면 `admin/index.html` 페이지로 연결한다.
