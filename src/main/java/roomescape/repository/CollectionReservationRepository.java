@@ -2,6 +2,7 @@ package roomescape.repository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicLong;
 
 import org.springframework.stereotype.Repository;
 
@@ -10,23 +11,35 @@ import roomescape.domain.Reservation;
 @Repository
 public class CollectionReservationRepository implements ReservationRepository {
 
+    private static final long INITIAL_ID = 1;
+
+    private final AtomicLong counter = new AtomicLong(INITIAL_ID);
+
     private final List<Reservation> reservations;
+
+    public CollectionReservationRepository() {
+        this.reservations = new ArrayList<>();
+    }
 
     public CollectionReservationRepository(List<Reservation> reservations) {
         this.reservations = reservations;
     }
 
-    public CollectionReservationRepository() {
-        List<Reservation> step1 = List.of(
-                new Reservation(1L, "브라운", "2024-06-11", "14:00"),
-                new Reservation(2L, "리사", "2024-06-12", "15:00"),
-                new Reservation(3L, "토미", "2024-06-13", "16:00")
-        );
-        reservations = new ArrayList<>(step1);
-    }
-
     @Override
     public List<Reservation> findAll() {
         return List.copyOf(reservations);
+    }
+
+    @Override
+    public Reservation save(Reservation reservation) {
+        long id = counter.getAndIncrement();
+        Reservation saved = new Reservation(id, reservation.name(), reservation.date(), reservation.time());
+        reservations.add(saved);
+        return saved;
+    }
+
+    @Override
+    public void deleteById(long id) {
+        reservations.removeIf(it -> it.id() == id);
     }
 }

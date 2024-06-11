@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import roomescape.domain.Reservation;
+import roomescape.dto.request.ReservationRequest;
 import roomescape.dto.response.ReservationResponse;
 import roomescape.repository.ReservationRepository;
 
@@ -21,5 +23,15 @@ public class ReservationService {
                 .stream()
                 .map(ReservationResponse::new)
                 .toList();
+    }
+
+    public ReservationResponse create(ReservationRequest request) {
+        Reservation reservation = request.toReservation();
+        Reservation saved = reservationRepository.save(reservation);
+        return new ReservationResponse(saved);
+    }
+
+    public void cancel(long id) {
+        reservationRepository.deleteById(id);
     }
 }

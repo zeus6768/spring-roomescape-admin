@@ -1,38 +1,58 @@
 package roomescape.controller;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.is;
 
-import java.util.List;
+import static roomescape.fixture.ReservationFixture.RESERVATION_ONE;
+import static roomescape.fixture.ReservationFixture.RESERVATION_TWO;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
-import org.springframework.boot.test.web.server.LocalServerPort;
 
 import io.restassured.RestAssured;
-import roomescape.domain.Reservation;
-import roomescape.dto.response.ReservationResponse;
+import io.restassured.http.ContentType;
+import roomescape.dto.request.ReservationRequest;
 
-@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
-class AdminControllerTest {
-
-    @LocalServerPort
-    private int port;
-
-    @BeforeEach
-    void setUp() {
-        RestAssured.port = port;
-    }
+class AdminControllerTest extends RestAssuredTest {
 
     @Test
     void findAllReservations() {
-        List<ReservationResponse> reservations = RestAssured.given().log().all()
-                .when().get("admin/reservations")
-                .then().log().all()
-                .statusCode(200)
-                .extract().body().jsonPath().getList(".", ReservationResponse.class);
+        addReservation(RESERVATION_ONE);
+        addReservation(RESERVATION_TWO);
 
-        assertThat(reservations).hasSize(3);
+        assertReservationsHasSize(2);
+    }
+
+    @Test
+    void createReservation() {
+        addReservation(RESERVATION_ONE);
+        addReservation(RESERVATION_TWO);
+        assertReservationsHasSize(2);
+
+        var request = new ReservationRequest("브라운", "2023-08-05", "15:40");
+
+        RestAssured.given().log().all()
+                .contentType(ContentType.JSON)
+                .body(request)
+                .when().post("/admin/reservations")
+                .then().log().all()
+                .statusCode(201)
+                .body("id", is(3))
+                .extract().body().jsonPath()
+                .get();
+
+        assertReservationsHasSize(3);
+    }
+
+    @Test
+    void deleteReservation() {
+        addReservation(RESERVATION_ONE);
+        addReservation(RESERVATION_TWO);
+        assertReservationsHasSize(2);
+
+        RestAssured.given().log().all()
+                .when().delete("/admin/reservations/1")
+                .then().log().all()
+                .statusCode(204);
+
+        assertReservationsHasSize(1);
     }
 }

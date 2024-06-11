@@ -10,3 +10,16 @@ GET http://localhost:8080/admin/reservation
 
 ### 관리자 예약 조회 api
 GET http://localhost:8080/admin/reservations
+
+### 관리자 예약 추가 api
+POST http://localhost:8080/admin/reservations
+content-type: application/json
+
+{
+  "name": "브라운",
+  "date": "2023-08-05",
+  "time": "15:40"
+}
+
+### 관리자 예약 삭제 api
+DELETE http://localhost:8080/admin/reservations/5
