@@ -17,8 +17,8 @@
 
 <br>
 
-- [ ] `/admin/reservation`으로 접속하면 `admin/reservation-legacy.html` 페이지로 연결한다.
-- [ ] 예약 목록 전체를 조회할 수 있다. 
+- [x] `/admin/reservation`으로 접속하면 `admin/reservation-legacy.html` 페이지로 연결한다.
+- [x] 예약 목록 전체를 조회할 수 있다. 
 
 ### API 명세
 
