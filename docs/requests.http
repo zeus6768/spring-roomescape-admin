@@ -2,8 +2,11 @@
 GET https://examples.http-client.intellij.net/get
     ?generated-in=IntelliJ IDEA
 
-### 관리자 홈 화면
+### 관리자 홈 화면 view
 GET http://localhost:8080/admin
 
-### 관리자 예약 조회
+### 관리자 예약 조회 view
 GET http://localhost:8080/admin/reservation
+
+### 관리자 예약 조회 api
+GET http://localhost:8080/admin/reservations
