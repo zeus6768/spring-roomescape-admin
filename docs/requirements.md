@@ -27,7 +27,7 @@
 ##### Request
 
 ```http request
-GET /reservations HTTP/1.1
+GET /admin/reservations HTTP/1.1
 ```
 
 ##### Response
@@ -50,4 +50,57 @@ Content-Type: application/json
         "time": "11:00"
     }
 ]
+```
+
+## 3단계 - 예약 추가 / 취소
+
+- API 명세를 따라 예약 추가 API 와 삭제 API를 구현하세요.
+
+<br>
+
+- [ ] 예약을 추가할 수 있다. 
+- [ ] 예약을 취소할 수 있다. 
+
+### API 명세
+
+#### 예약 추가 API
+
+##### Request
+
+```http request
+POST /admin/reservations HTTP/1.1
+content-type: application/json
+
+{
+    "date": "2023-08-05",
+    "name": "브라운",
+    "time": "15:40"
+}
+```
+
+##### Response
+
+```http request
+HTTP/1.1 200 
+Content-Type: application/json
+
+{
+    "id": 1,
+    "name": "브라운",
+    "date": "2023-08-05",
+    "time": "15:40"
+}
+```
+
+#### 예약 취소 API
+
+##### Request
+```http request
+DELETE /admin/reservations/1 HTTP/1.1
+```
+
+##### Response
+
+```http request
+HTTP/1.1 204
 ```
