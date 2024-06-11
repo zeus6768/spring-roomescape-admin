@@ -1,9 +1,5 @@
 package roomescape.controller;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-import java.util.List;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -11,10 +7,9 @@ import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.web.server.LocalServerPort;
 
 import io.restassured.RestAssured;
-import roomescape.domain.Reservation;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
-class AdminControllerTest {
+public class AdminViewControllerTest {
 
     @LocalServerPort
     private int port;
@@ -25,13 +20,18 @@ class AdminControllerTest {
     }
 
     @Test
-    void findAllReservations() {
-        List<Reservation> reservations = RestAssured.given().log().all()
-                .when().get("admin/reservations")
+    void index() {
+        RestAssured.given().log().all()
+                .when().get("/admin")
                 .then().log().all()
-                .statusCode(200)
-                .extract().body().jsonPath().getList(".", Reservation.class);
+                .statusCode(200);
+    }
 
-        assertThat(reservations).hasSize(3);
+    @Test
+    void reservation() {
+        RestAssured.given().log().all()
+                .when().get("/admin/reservation")
+                .then().log().all()
+                .statusCode(200);
     }
 }
