@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import roomescape.domain.Reservation;
+import roomescape.dto.response.ReservationResponse;
 import roomescape.service.ReservationService;
 
 @RestController
@@ -20,7 +20,7 @@ public class AdminController {
     }
 
     @GetMapping("/reservations")
-    public List<Reservation> findAllReservations() {
+    public List<ReservationResponse> findAllReservations() {
         return reservationService.findAll();
     }
 }

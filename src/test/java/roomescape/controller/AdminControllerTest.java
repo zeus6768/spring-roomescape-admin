@@ -12,6 +12,7 @@ import org.springframework.boot.test.web.server.LocalServerPort;
 
 import io.restassured.RestAssured;
 import roomescape.domain.Reservation;
+import roomescape.dto.response.ReservationResponse;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 class AdminControllerTest {
@@ -26,11 +27,11 @@ class AdminControllerTest {
 
     @Test
     void findAllReservations() {
-        List<Reservation> reservations = RestAssured.given().log().all()
+        List<ReservationResponse> reservations = RestAssured.given().log().all()
                 .when().get("admin/reservations")
                 .then().log().all()
                 .statusCode(200)
-                .extract().body().jsonPath().getList(".", Reservation.class);
+                .extract().body().jsonPath().getList(".", ReservationResponse.class);
 
         assertThat(reservations).hasSize(3);
     }
